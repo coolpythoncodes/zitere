@@ -1,18 +1,9 @@
-import Layout from "components/layout"
-import { Faq, GetStarted, Hero, Why } from "components/sections/home"
+import AppRouter from "router"
 
 
 const App = () => {
   return (
-    <Layout>
-      <Hero />
-      <section className="py-10">
-        
-      </section>
-      <Why />
-      <Faq />
-      <GetStarted />
-    </Layout>
+    <AppRouter />
   )
 }
 
