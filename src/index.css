@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
 	@font-face {
 		font-family: "Matter-Bold";
@@ -44,6 +43,10 @@
 
 	.error {
 		@apply border border-red-500;
+	}
+
+	.btn {
+		@apply bg-[#5E44FF] rounded-[4px] matter-medium text-white flex items-center justify-center capitalize text-base leading-[18px] w-[196px] h-12;
 	}
 }
 

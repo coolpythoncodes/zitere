@@ -1,0 +1,5 @@
+const getStarted = '/'
+
+export {
+    getStarted
+}
