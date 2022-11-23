@@ -1,3 +1,64 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+
+@layer base {
+	@font-face {
+		font-family: "Matter-Bold";
+		src: local("Matter Bold"), local("Matter-Bold"),
+			url("./assets/fonts/Matter/Matter-Bold.ttf") format("truetype");
+		font-weight: bold;
+		font-style: normal;
+	}
+
+	@font-face {
+		font-family: "Matter-Medium";
+		src: local("Matter Medium"), local("Matter-Medium"),
+			url("./assets/fonts/Matter/Matter-Medium.ttf") format("truetype");
+		font-weight: 500;
+		font-style: normal;
+	}
+
+	@font-face {
+		font-family: "Matter-Regular";
+		src: local("Matter Regular"), local("Matter-Regular"),
+			url("./assets/fonts/Matter/Matter-Regular.ttf") format("truetype");
+		font-weight: normal;
+		font-style: normal;
+	}
+
+	@font-face {
+		font-family: "Matter-SemiBold";
+		src: local("Matter SemiBold"), local("Matter-SemiBold"),
+			url("./assets/fonts/Matter/Matter-SemiBold.ttf") format("truetype");
+		font-weight: 600;
+		font-style: normal;
+	}
+}
+
+@layer components {
+	.layout-container {
+		@apply w-11/12 mx-auto;
+	}
+
+	.error {
+		@apply border border-red-500;
+	}
+}
+
+.matter-bold {
+	font-family: Matter-Bold;
+}
+
+.matter-medium {
+	font-family: Matter-Medium;
+}
+
+.matter-regular {
+	font-family: Matter-Regular;
+}
+
+.matter-semiBold {
+	font-family: Matter-SemiBold;
+}
