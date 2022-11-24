@@ -46,7 +46,11 @@
 	}
 
 	.btn {
-		@apply bg-[#5E44FF] rounded-[4px] matter-medium text-white flex items-center justify-center capitalize text-base leading-[18px] w-[196px] h-12;
+		@apply bg-[#5E44FF] cursor-pointer rounded-[4px] matter-medium text-white flex items-center justify-center capitalize text-base leading-[18px] w-[196px] h-12;
+	}
+
+	.sidebar-text {
+		@apply matter-medium text-white text-base leading-[19px] capitalize;
 	}
 }
 

@@ -1,8 +1,8 @@
 import logo from 'assets/logo.svg'
 
-const Logo = () => {
+const Logo = ({ icon }) => {
   return (
-    <img src={logo} alt="" />
+    <img src={icon || logo} alt="" />
   )
 }
 

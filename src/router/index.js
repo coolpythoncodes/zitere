@@ -1,4 +1,4 @@
-import Home from 'pages/home'
+import { Exchange, Home } from 'pages'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 const AppRouter = () => {
@@ -6,6 +6,7 @@ const AppRouter = () => {
         <BrowserRouter>
             <Routes>
                 <Route path='/' element={<Home />} />
+                <Route path='/home' element={<Exchange/>} />
             </Routes>
         </BrowserRouter>
     )

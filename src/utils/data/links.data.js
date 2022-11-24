@@ -1,4 +1,4 @@
-const getStarted = '/'
+const getStarted = '/home'
 
 export {
     getStarted
