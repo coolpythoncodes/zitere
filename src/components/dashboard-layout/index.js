@@ -1,15 +1,14 @@
 import { useState } from "react";
-import { Link, useLocation } from "react-router-dom";
-import { Layout } from "styles"
+import { Link, Outlet, useLocation } from "react-router-dom";
+import { Layout, Main } from "styles"
 import { sidebarLinks } from "utils/data";
 import Aside from "./aside"
 import Navbar from "./navbar";
 
-const DashboardLayout = ({ children }) => {
+const DashboardLayout = () => {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     const location = useLocation()
-    console.log(location)
 
     const openSidebar = () => {
         setSidebarOpen(true);
@@ -31,7 +30,11 @@ const DashboardLayout = ({ children }) => {
                     ))
                 }
             </Aside >
-            {children}
+            <Main className="pt-5 pb-[100px] md:pt-8 font-Montserrat bg-[#F5F5F5]">
+                <div className="w-11/12 mx-auto">
+                    <Outlet />
+                </div>
+            </Main>
         </Layout>
     )
 }

@@ -27,7 +27,12 @@ const Aside = ({ children, sidebarOpen, closeSidebar }) => {
                     <Link to="/">
                         <Logo icon={whiteLogo} />
                     </Link>
-                    <img src={closeIcon} alt="" className="lg:hidden" onClick={closeSidebar} />
+                    <img
+                        src={closeIcon}
+                        alt=""
+                        className="lg:hidden cursor-pointer"
+                        onClick={closeSidebar}
+                    />
                 </div>
 
                 <ul className="mt-20 space-y-5 cursor-pointer">

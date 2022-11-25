@@ -52,6 +52,10 @@
 	.sidebar-text {
 		@apply matter-medium text-white text-base leading-[19px] capitalize;
 	}
+
+	.label {
+		@apply matter-medium text-base leading-[19px] text-[#0A0B0D] mb-2;
+	}
 }
 
 .matter-bold {

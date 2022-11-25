@@ -1,10 +1,14 @@
-import DashboardLayout from "components/dashboard-layout"
+import { RecentTransactions, SendMoney, WalletBalance } from "components/sections/exchange"
 
 const Exchange = () => {
   return (
-    <DashboardLayout>
-        Exchange
-    </DashboardLayout>
+    <div className="md:grid grid-cols-2 gap-x-9">
+      <div className="">
+        <WalletBalance />
+        <RecentTransactions />
+      </div>
+      <SendMoney />
+    </div>
   )
 }
 
