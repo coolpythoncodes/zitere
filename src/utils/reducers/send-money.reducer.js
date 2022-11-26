@@ -1,11 +1,13 @@
 export const INITIAL_BANK_STATE = {
     amount: '',
     country: 'Nigeria',
+    countryCurrency: 'NGN',
     bankName: '',
-    bankCode:'',
+    bankCode: '',
     accountNumber: '',
     accountName: '',
     bankList: [],
+    isAccountValidated: false,
     isTermsAccepted: false
 }
 
@@ -16,6 +18,9 @@ export const ACTION_TYPES_SEND_MONEY = {
     GO_BACK: 'go_back',
     UPDATE_BANK_LIST: 'update_bank_list',
     SELECT_OPTION_BANK_NAME: 'select_option_bank_name',
+    UPDATE_ACCOUNT_NAME: 'update_account_name',
+    ACCOUNT_VALIDATED: 'account_validated',
+    ACCOUNT_NOT_VALIDATED: 'account_not_validated'
 }
 
 export const sendMoneyReducer = (state, action) => {
@@ -30,7 +35,8 @@ export const sendMoneyReducer = (state, action) => {
         case ACTION_TYPES_SEND_MONEY.SELECT_OPTION:
             return {
                 ...state,
-                country: payload
+                country: payload.option,
+                countryCurrency: payload.countryCurrency
             }
 
         case ACTION_TYPES_SEND_MONEY.SELECT_OPTION_BANK_NAME:
@@ -48,11 +54,31 @@ export const sendMoneyReducer = (state, action) => {
 
         case ACTION_TYPES_SEND_MONEY.GO_BACK:
             return INITIAL_BANK_STATE;
-        
+
         case ACTION_TYPES_SEND_MONEY.UPDATE_BANK_LIST:
             return {
                 ...state,
                 bankList: payload
+            }
+
+        case ACTION_TYPES_SEND_MONEY.UPDATE_ACCOUNT_NAME:
+            return {
+                ...state,
+                accountName: payload.accountName,
+                accountNumber: payload.accountNumber
+            }
+
+        case ACTION_TYPES_SEND_MONEY.ACCOUNT_VALIDATED:
+            return {
+                ...state,
+                isAccountValidated: true
+            }
+
+        case ACTION_TYPES_SEND_MONEY.ACCOUNT_NOT_VALIDATED:
+            return {
+                ...state,
+                accountName: '',
+                isAccountValidated: false
             }
 
         default:

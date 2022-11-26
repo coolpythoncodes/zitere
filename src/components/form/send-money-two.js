@@ -1,7 +1,7 @@
-import getBankDetails from 'api'
+import { getBankDetails } from 'api'
 import { Button, Input, Select } from 'components/input'
 import { useEffect, useState } from 'react'
-import { useQuery } from 'react-query'
+import toast from 'react-hot-toast'
 import { ACTION_TYPES_SEND_MONEY } from 'utils/reducers'
 
 const SendMoneyTwo = ({ state, dispatch }) => {
@@ -16,15 +16,9 @@ const SendMoneyTwo = ({ state, dispatch }) => {
             type: ACTION_TYPES_SEND_MONEY.SELECT_OPTION_BANK_NAME,
             payload: {
                 option: option,
-                bankCode:bankCode
+                bankCode: bankCode
             }
         })
-    }
-
-    const { data, refetch, error } = useQuery('Validate-account', getBankDetails(state.accountNumber, state.bankCode), { enabled: false })
-
-    const _getBankDetails = ()=>{
-        
     }
 
     const handleTextChange = (e) => {
@@ -38,6 +32,14 @@ const SendMoneyTwo = ({ state, dispatch }) => {
     }
 
     useEffect(() => {
+        dispatch({
+            type: ACTION_TYPES_SEND_MONEY.ACCOUNT_NOT_VALIDATED
+        })
+
+    }, [state.accountNumber, state.bankName, dispatch])
+
+
+    useEffect(() => {
         if (
             state.accountNumber &&
             state.bankName &&
@@ -46,15 +48,49 @@ const SendMoneyTwo = ({ state, dispatch }) => {
             setIsValid(true);
     }, [state.accountNumber, state.bankName, state.accountName]);
 
-    useEffect(() => {
-        if (state?.accountNumber?.length === 10 && state?.bankName) {
-            refetch()
-            console.log('data',data)
-            console.error('error', error)
+    const validateAccount = async (e) => {
+        e.preventDefault()
+        if (!state.accountNumber || !state.bankCode) {
+            toast.error('Account number and bank are required')
+            return
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state?.accountNumber, state?.bankCode])
+        const notification = toast.loading('Validating account details')
 
+        try {
+            const response = await getBankDetails(
+                state.accountNumber,
+                state.bankCode
+            );
+            if (response?.status) {
+                dispatch({
+                    type: ACTION_TYPES_SEND_MONEY.UPDATE_ACCOUNT_NAME,
+                    payload: {
+                        accountName: response?.data?.data?.account_name,
+                        accountNumber: response?.data?.data?.account_number
+                    }
+                })
+
+                dispatch({
+                    type: ACTION_TYPES_SEND_MONEY.ACCOUNT_VALIDATED
+                })
+
+                toast.success("Account details fetched successfully", {
+                    id: notification
+                })
+
+            } else {
+                toast.error("Please check the account details", {
+                    id: notification
+                });
+            }
+        } catch (error) {
+            toast.error("Something went wrong", {
+                id: notification
+            });
+        }
+
+
+    }
 
     return (
         <form className='mt-6 space-y-6'>
@@ -79,11 +115,22 @@ const SendMoneyTwo = ({ state, dispatch }) => {
                 handleTextChange={handleTextChange}
                 value={state?.accountName}
             />
-            <Button
-                title='Continue'
-                className='w-full disabled:bg-gray-700'
-                isDisabled={!isValid}
-            />
+            {
+                state.isAccountValidated ?
+                    <Button
+                        title='Continue'
+                        className='w-full disabled:bg-gray-700'
+                        isDisabled={!isValid}
+                    />
+                    :
+                    <Button
+                        title='Validate account'
+                        className='w-full'
+                        onClick={validateAccount}
+                    />
+            }
+
+
         </form>
     )
 }

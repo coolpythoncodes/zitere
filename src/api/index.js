@@ -11,10 +11,26 @@ const getBankDetails = async (
     accountNumber,
     bankCode
 ) => {
-    console.log('accountNumber', accountNumber, 'bankCode', bankCode)
-    const response = instance.get(`/bank/resolve?account_number=${accountNumber}&bank_code=${bankCode}`)
-    return response;
-
+    let response
+    try {
+        response = await instance.get(`/bank/resolve?account_number=${accountNumber}&bank_code=${bankCode}`)
+        return response;
+    } catch (error) {
+        return error
+    }
 }
 
-export default getBankDetails;
+const getBankList = async (countryCode) => {
+    let response
+    try {
+        response = await instance.get(`/bank?currency=${countryCode}`)
+        return response
+    } catch (error) {
+        return error
+    }
+}
+
+export  {
+    getBankList,
+    getBankDetails
+}

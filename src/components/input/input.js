@@ -1,5 +1,5 @@
 import { forwardRef } from 'react'
-import usdc from 'assets/icons/usdc.svg'
+import usdcIcon from 'assets/icons/usdc.svg'
 
 const Input = forwardRef(({
     label,
@@ -32,7 +32,7 @@ const Input = forwardRef(({
                 {
                     usdc ?
                         <div className="flex items-center bg-[#E0E7FF] py-[5px] px-[6px] rounded-lg">
-                            <img src={usdc} alt="" />
+                            <img src={usdcIcon} alt="" />
                             <p className="text-primary pl-1 capitalize text-sm leading-[19px] matter-bold ">USDC</p>
                         </div>
                         : null
