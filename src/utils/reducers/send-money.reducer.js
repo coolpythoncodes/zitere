@@ -8,7 +8,8 @@ export const INITIAL_BANK_STATE = {
     accountName: '',
     bankList: [],
     isAccountValidated: false,
-    isTermsAccepted: false
+    isTermsAccepted: false,
+    rate: ''
 }
 
 export const ACTION_TYPES_SEND_MONEY = {
@@ -20,7 +21,9 @@ export const ACTION_TYPES_SEND_MONEY = {
     SELECT_OPTION_BANK_NAME: 'select_option_bank_name',
     UPDATE_ACCOUNT_NAME: 'update_account_name',
     ACCOUNT_VALIDATED: 'account_validated',
-    ACCOUNT_NOT_VALIDATED: 'account_not_validated'
+    ACCOUNT_NOT_VALIDATED: 'account_not_validated',
+    UPDATE_RATE: 'update_rate',
+    ACCEPT_TERMS: 'accept_terms'
 }
 
 export const sendMoneyReducer = (state, action) => {
@@ -79,6 +82,17 @@ export const sendMoneyReducer = (state, action) => {
                 ...state,
                 accountName: '',
                 isAccountValidated: false
+            }
+        case ACTION_TYPES_SEND_MONEY.UPDATE_RATE:
+            return {
+                ...state,
+                rate: payload
+            }
+
+        case ACTION_TYPES_SEND_MONEY.ACCEPT_TERMS:
+            return {
+                ...state,
+                isTermsAccepted: true
             }
 
         default:

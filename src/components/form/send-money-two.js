@@ -1,11 +1,14 @@
 import { getBankDetails } from 'api'
 import { Button, Input, Select } from 'components/input'
+import { RiskNoticeOne, TradeDetails } from 'components/modals'
 import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { ACTION_TYPES_SEND_MONEY } from 'utils/reducers'
 
 const SendMoneyTwo = ({ state, dispatch }) => {
     const [isValid, setIsValid] = useState(false)
+    const [showTradeDetails, setShowTradeDetails] = useState(false)
+    const [showRiskNoticeOne, setShowRiskNoticeOne] = useState(false);
 
     const bankList = state.bankList.map(item => item.bankName)
     const handleSelectOption = (option) => {
@@ -88,50 +91,68 @@ const SendMoneyTwo = ({ state, dispatch }) => {
                 id: notification
             });
         }
+    }
 
-
+    const handleContinue = (e) => {
+        e.preventDefault()
+        setShowTradeDetails(true)
     }
 
     return (
-        <form className='mt-6 space-y-6'>
-            <Select
-                data={bankList}
-                label='Bank name'
-                state={state.bankName || 'Bank name'}
-                handleSelectOption={handleSelectOption}
-            />
-            <Input
-                type='number'
-                label='Account number'
-                name='accountNumber'
-                placeholder='Account Number'
-                handleTextChange={handleTextChange}
-            />
-            <Input
-                label="Account name"
-                name="accountName"
-                placeholder="Account Name"
-                isDisabled
-                handleTextChange={handleTextChange}
-                value={state?.accountName}
-            />
+        <>
+            {showTradeDetails && (
+                <TradeDetails
+                    formData={state}
+                    {...{ state, dispatch, setShowTradeDetails, showTradeDetails, setShowRiskNoticeOne }}
+                />
+            )}
+
             {
-                state.isAccountValidated ?
-                    <Button
-                        title='Continue'
-                        className='w-full disabled:bg-gray-700'
-                        isDisabled={!isValid}
-                    />
-                    :
-                    <Button
-                        title='Validate account'
-                        className='w-full'
-                        onClick={validateAccount}
-                    />
+                showRiskNoticeOne && (
+                    <RiskNoticeOne {...{ showRiskNoticeOne, setShowRiskNoticeOne, state, dispatch }} />
+                )
             }
+            <form className='mt-6 space-y-6'>
+                <Select
+                    data={bankList}
+                    label='Bank name'
+                    state={state.bankName || 'Bank name'}
+                    handleSelectOption={handleSelectOption}
+                />
+                <Input
+                    type='number'
+                    label='Account number'
+                    name='accountNumber'
+                    placeholder='Account Number'
+                    handleTextChange={handleTextChange}
+                />
+                <Input
+                    label="Account name"
+                    name="accountName"
+                    placeholder="Account Name"
+                    isDisabled
+                    handleTextChange={handleTextChange}
+                    value={state?.accountName}
+                />
+                {
+                    state.isAccountValidated ?
+                        <Button
+                            title='Continue'
+                            className='w-full disabled:bg-gray-700'
+                            isDisabled={!isValid}
+                            onClick={handleContinue}
+                        />
+                        :
+                        <Button
+                            title='Validate account'
+                            className='w-full'
+                            onClick={validateAccount}
+                        />
+                }
 
 
-        </form>
+            </form>
+        </>
     )
 }
 
