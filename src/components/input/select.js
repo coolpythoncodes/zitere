@@ -14,7 +14,7 @@ const Select = ({ label, data, state, handleSelectOption }) => {
                     <img src={chevronDown} alt="" />
                 </Listbox.Button>
                 <Listbox.Options className="bg-white py-1 text-primary-2 capitalize text-base leading-[19px] matter-regular rounded-[5px] border border-[#A7B7C8] h-[100px] overflow-hidden overflow-y-scroll">
-                    {data.map((value, index) => (
+                    {data?.map((value, index) => (
                         <Listbox.Option
                             key={index}
                             value={value}
