@@ -10,7 +10,7 @@ const SendMoneyTwo = ({ state, dispatch }) => {
     const [showTradeDetails, setShowTradeDetails] = useState(false)
     const [showRiskNoticeOne, setShowRiskNoticeOne] = useState(false);
 
-    const bankList = state.bankList.map(item => item.bankName)
+    const bankList = state?.bankList?.map(item => item.bankName)
     const handleSelectOption = (option) => {
         const bankName = option
         const bankDetails = state.bankList.filter(item => item.bankName.toLowerCase() === bankName.toLowerCase())
