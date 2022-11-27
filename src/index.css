@@ -56,6 +56,30 @@
 	.label {
 		@apply matter-medium text-base leading-[19px] text-[#0A0B0D] mb-2;
 	}
+
+	.initiated {
+		@apply text-[#2952CC] bg-[#D6E0FF];
+	}
+
+	.accepted {
+		@apply bg-[#edeff5] text-[#474d66];
+	}
+
+	.completed {
+		@apply bg-[rgba(32,150,83,0.1)] text-[#209653];
+	}
+
+	.fulfilled {
+		@apply bg-[#DCF2EA] text-[#317159];
+	}
+
+	.cancelled {
+		@apply bg-[rgba(235,87,87,0.1)] text-[#EB5757];
+	}
+
+	.dispute {
+		@apply text-[#66460D] bg-[#FFEFD2];
+	}
 }
 
 .matter-bold {

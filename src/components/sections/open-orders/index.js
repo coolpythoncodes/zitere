@@ -1,0 +1,1 @@
+export { default as RecepientDetails } from './recepient-details'

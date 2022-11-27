@@ -23,7 +23,7 @@ const DashboardLayout = () => {
             <Aside {...{ sidebarOpen, closeSidebar }} >
                 {
                     sidebarLinks.map((item, index) => (
-                        <Link key={index} to={item.to} className={`px-8 py-[14px] flex items-center space-x-[10px] relative ${location.pathname === item.to ? "bg-[#373B5E] before:content-[''] before:absolute before:h-full before:w-[4px] before:bg-[#5E44FF] before:-right-[0.5px] before:top-0" : ""} `}>
+                        <Link key={index} to={item.to} className={`px-8 py-[14px] flex items-center space-x-[10px] relative ${location.pathname.includes(item.to) ? "bg-[#373B5E] before:content-[''] before:absolute before:h-full before:w-[4px] before:bg-[#5E44FF] before:-right-[0.5px] before:top-0" : ""} `}>
                             <img src={item.icon} alt="" />
                             <p className="sidebar-text">{item.name}</p>
                         </Link>

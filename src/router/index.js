@@ -1,5 +1,5 @@
 import DashboardLayout from 'components/dashboard-layout'
-import { Exchange, Home } from 'pages'
+import { Exchange, Home, OpenOrders, OrderTransactionPage } from 'pages'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 const AppRouter = () => {
@@ -9,6 +9,8 @@ const AppRouter = () => {
                 <Route path='/' element={<Home />} />
                 <Route element={<DashboardLayout />}>
                     <Route path='/home' element={<Exchange />} />
+                    <Route path='/open-orders' element={<OpenOrders />} />
+                    <Route path='/open-orders/:id' element={<OrderTransactionPage />} />
                 </Route>
             </Routes>
         </BrowserRouter>
