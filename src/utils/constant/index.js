@@ -1,37 +1,30 @@
-// import Web3 from "web3"
+import Web3 from "web3"
 
-// const rpcUrl = {
-//     mainnet: 'https://api.s0.t.hmny.io',
-//     testnet: 'https://api.s0.b.hmny.io'
-// }
+const { ethereum } = window
 
-// const { ethereum } = window
+const web3 = new Web3(ethereum)
 
-// const web3 = new Web3(ethereum)
-// const shardId = 0;
-
-// const networks = {
-//     mainnet: {
-//         chainId: '0x' + Number(1666600000 + shardId).toString(16),
-//         chainName: 'Harmony Mainnet Shard ' + shardId,
-//         nativeCurrency: { name: 'ONE', symbol: 'ONE', decimals: 18 },
-//         rpcUrls: ['https://' + (shardId === 0 ? 'api.harmony.one' : 'api.s' + shardId + '.t.hmny.io')],
-//         blockExplorerUrls: ['https://explorer.harmony.one/'],
-//     },
-//     testnet: {
-//         chainId: `0x${Number(1666700000 + shardId).toString(16)}`,
-//         chainName: `Harmony Testnet Shard ${shardId}`,
-//         nativeCurrency: { name: 'ONE', symbol: 'ONE', decimals: 18 },
-//         rpcUrls: [`https://api.s${shardId}.b.hmny.io/`,],
-//         blockExplorerUrls: ['https://explorer.harmony.one/'],
-//     }
-// }
+const networks = {
+    testnet: {
+        chainId: `0x${Number(80001).toString(16)}`,
+        chainName: 'Mumbai',
+        nativeCurrency: {
+            name: "MATIC",
+            symbol: "MATIC",
+            decimals: 18
+        },
+        rpcUrls: [
+            "https://matic-mumbai.chainstacklabs.com",
+            "https://rpc-mumbai.maticvigil.com",
+            "https://matic-testnet-archive-rpc.bwarelabs.com"
+        ],
+        blockExplorerUrls: ['https://mumbai.polygonscan.com'],
+    }
+}
 
 
-// export {
-//     rpcUrl,
-//     web3,
-//     ethereum,
-//     shardId,
-//     networks
-// }
+export {
+    web3,
+    ethereum,
+    networks
+}
