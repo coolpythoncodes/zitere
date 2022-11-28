@@ -5,7 +5,7 @@ import { SidebarContainer } from "styles"
 // images 
 import whiteLogo from 'assets/white-logo.svg'
 import closeIcon from 'assets/icons/white-close-icon.svg'
-import logOutIcon from 'assets/icons/log-out.svg'
+// import logOutIcon from 'assets/icons/log-out.svg'
 
 const Aside = ({ children, sidebarOpen, closeSidebar }) => {
 
