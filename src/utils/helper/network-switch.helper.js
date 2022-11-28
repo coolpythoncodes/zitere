@@ -15,7 +15,7 @@ const changeNetwork = async ({ networkName }) => {
 export const isPolygonNetwork = (chainId) => `0x${Number(chainId).toString(16)}` === `0x${Number(80001).toString(16)}`
 
 export const handleNetworkSwitch = async (networkName) => {
-    const notification = toast.loading("Switching to Harmony network...")
+    const notification = toast.loading("Switching to Polygon Matic network...")
     try {
         if (!ethereum) return toast.error("You must install Metamask in your browser extension.", {
             id: notification

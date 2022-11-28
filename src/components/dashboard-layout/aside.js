@@ -21,7 +21,7 @@ const Aside = ({ children, sidebarOpen, closeSidebar }) => {
         }
     }
     return (
-        <SidebarContainer style={sidebarResponsiveStyle()} className="hidden  h-full bg-[#454A75] pt-10 lg:block">
+        <SidebarContainer style={sidebarResponsiveStyle()} className="hidden h-screen bg-[#454A75] pt-10 lg:block">
             <div className="flex flex-col h-[90vh]">
                 <div className="px-8 flex items-center justify-between">
                     <Link to="/">
