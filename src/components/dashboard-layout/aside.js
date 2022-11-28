@@ -39,14 +39,14 @@ const Aside = ({ children, sidebarOpen, closeSidebar }) => {
                     {children}
                 </ul>
 
-                <div className="flex h-full pb-[100px] items-end">
+                {/* <div className="flex h-full pb-[100px] items-end">
                     <div
                         // onClick={logOut} 
                         className="flex items-center space-x-5 sidebar-text w-full px-8 cursor-pointer">
                         <img src={logOutIcon} alt="" />
                         <p>disconnect wallet</p>
                     </div>
-                </div>
+                </div> */}
             </div>
         </SidebarContainer>
     )
