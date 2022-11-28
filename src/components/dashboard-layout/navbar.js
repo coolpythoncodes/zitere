@@ -1,10 +1,10 @@
 import { NavContainer } from 'styles'
 import { useContractContext } from 'context/ContractContext'
+import { Button } from 'components/input'
+import { formatWalletAddress } from 'utils/helper'
 
 // images
 import menuIcon from 'assets/icons/menu.png'
-import { Button } from 'components/input'
-import { formatWalletAddress } from 'utils/helper'
 
 const Navbar = ({ openSidebar }) => {
 

@@ -50,7 +50,7 @@ const DashboardLayout = () => {
     return (
         <>
             <p className="text-center matter-medium text-[#191535] text-sm leading-[17px] py-3 bg-[#6EE3C0] md:text-base md:leading-[19px]">Warning : You are on Testnet environment</p>
-            <Layout className="grid grid-cols-1 grid-rows-[0.2fr,3fr] h-screen relative error lg:grid-cols-[0.8fr,1fr,1fr,1fr]">
+            <Layout className="grid grid-cols-1 grid-rows-[0.2fr,3fr] h-screen relative lg:grid-cols-[0.8fr,1fr,1fr,1fr]">
                 <Navbar {...{ sidebarOpen, openSidebar }} />
                 <Aside {...{ sidebarOpen, closeSidebar }} >
                     {
@@ -62,7 +62,7 @@ const DashboardLayout = () => {
                         ))
                     }
                 </Aside >
-                <Main className="pt-5 pb-[100px] md:pt-8 font-Montserrat bg-[#F5F5F5]">
+                <Main className="pt-5 pb-[100px] md:pt-8 bg-[#F5F5F5]">
                     <div className="w-11/12 mx-auto">
                         <Outlet />
                     </div>
