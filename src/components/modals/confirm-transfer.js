@@ -1,12 +1,51 @@
-import { Fragment } from "react"
+import { Fragment, useState } from "react"
 import { Dialog, Transition } from "@headlessui/react"
 import { Button } from "components/input"
+import toast from "react-hot-toast"
+import { initRadenuContract } from "utils/helper/contract.helper"
 
 // images
 import closeIcon from "assets/icons/close.png"
 import riskIcon from "assets/icons/risk-icon.png"
 
-const ConfirmTransferModal = ({ showConfirmModal, setShowConfirmModal }) => {
+const ConfirmTransferModal = ({ showConfirmModal, orderId, setShowConfirmModal, setOrderData }) => {
+    const [isConfirming, setIsConfirming] = useState(false)
+
+    const getOrderById = async () => {
+        try {
+            const response = await initRadenuContract()
+            const contract = response.contract
+            const data = await contract.order(Number(orderId))
+            setOrderData(data)
+        } catch (error) {
+            console.log({ error })
+        }
+    }
+
+    const handleConfirm = async () => {
+        setIsConfirming(true)
+        const notification = toast.loading("Processing request...")
+        try {
+            const response = await initRadenuContract()
+            const contract = response.contract
+            const trxHash = await contract.completeOrder(Number(orderId) + 1)
+            const receipt = await trxHash.wait()
+            if (receipt) {
+                getOrderById()
+                setIsConfirming(false)
+                toast.success("Payment has been confirmed", {
+                    id: notification
+                })
+                setShowConfirmModal(false)
+            }
+        } catch (error) {
+            setIsConfirming(false)
+            toast.error("Something went wrong", {
+                id: notification
+            })
+            console.log(error)
+        }
+    }
 
     return (
         <Transition
@@ -49,8 +88,9 @@ const ConfirmTransferModal = ({ showConfirmModal, setShowConfirmModal }) => {
                         </section>
                         <div className="flex items-center space-x-[10px] justify-end md:space-x-[22px]">
                             <Button
-                                type="button"
-                                title="Yes, Continue"
+                                title={isConfirming ? 'transaction in progress...' : "Yes, Continue"}
+                                onClick={handleConfirm}
+                                isDisabled={isConfirming}
                                 className="w-full h-9 rounded-[5px] text-sm leading-[18px]"
                             />
                         </div>

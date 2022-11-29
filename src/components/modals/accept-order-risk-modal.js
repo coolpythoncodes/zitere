@@ -6,15 +6,45 @@ import { useNavigate } from "react-router-dom";
 // images 
 import closeIcon from 'assets/icons/close.png'
 import riskIcon from 'assets/icons/risk-icon.png'
+import toast from "react-hot-toast";
+import { formatUnit } from "utils/helper";
+import { initRadenuContract } from "utils/helper/contract.helper";
 
 
-const AcceptOrderRiskModal = ({ showRiskModal, setShowRiskModal }) => {
+const AcceptOrderRiskModal = ({ showRiskModal, setShowRiskModal, transferData }) => {
   const [isTermsAccepted, setIsTermsAccepted] = useState(false)
+  const [isAcceptingOrder, setIsAcceptingOrder] = useState(false)
   const navigate = useNavigate();
 
   const handleCheckbox = () => setIsTermsAccepted(!isTermsAccepted)
   const handleNavigation = (to) => navigate(to)
 
+  const handleConfirm = async () => {
+    setIsAcceptingOrder(true)
+    const notification = toast.loading("Processing request...")
+    try {
+      if (isTermsAccepted) {
+        const response = await initRadenuContract()
+        const contract = response.contract
+        const trxHash = await contract.acceptOrder(Math.round(formatUnit(transferData.orderId) * (10 ** 18)))
+        const reciept = await trxHash.wait()
+        if (reciept) {
+          toast.success('You have accepted the order', {
+            id: notification
+          })
+          setIsAcceptingOrder(false)
+          handleNavigation(`/open-orders/${Math.round((formatUnit(transferData.orderId) * (10 ** 18)) - 1)}`)
+        }
+      }
+    } catch (error) {
+      console.log({ error })
+      setIsAcceptingOrder(false)
+      toast.error(error?.message, {
+        id: notification
+      })
+    }
+
+  }
 
   return (
     <Transition
@@ -65,12 +95,20 @@ const AcceptOrderRiskModal = ({ showRiskModal, setShowRiskModal }) => {
               </div>
             </section>
             <div className="flex items-center space-x-[10px] justify-end md:space-x-[22px]">
-              <Button
-                title="Yes, Continue"
-                isDisabled={!isTermsAccepted}
-                onClick={() => handleNavigation('/open-orders/12')}
-                className="w-full h-9 rounded-[5px] text-sm leading-[18px]"
-              />
+              {
+                isAcceptingOrder ?
+                  <Button
+                    title="processing request"
+                    isDisabled={isAcceptingOrder}
+                    onClick={handleConfirm}
+                    className="w-full h-9 rounded-[5px] text-sm leading-[18px] disabled:bg-gray-600"
+                  /> :
+                  <Button
+                    title="Yes, Continue"
+                    isDisabled={!isTermsAccepted}
+                    onClick={handleConfirm}
+                    className="w-full h-9 rounded-[5px] text-sm leading-[18px] disabled:bg-gray-600"
+                  />}
             </div>
           </div>
         </div>

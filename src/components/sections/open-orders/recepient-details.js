@@ -1,33 +1,48 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Countdown from 'react-countdown';
 import { CopyToClipboard, Status } from 'components/misc';
 import { Button } from 'components/input';
 import { ConfirmTransferModal } from 'components/modals';
+import { initRadenuContract } from 'utils/helper/contract.helper';
+import { useParams } from 'react-router-dom';
+import { formatDate, formatUnit } from 'utils/helper';
+import { orderState } from 'utils/constant';
 
 
 // images 
 import arrowLeft from 'assets/icons/arrow-left.svg'
 
-const orderData =
-{
-    accountName: 'Ugoguba anthony',
-    accountNumber: '0883883381',
-    bankName: 'access bank',
-    amount: 1000,
-    exchangeRate: '750',
-    timeInitiated: '22 Jun, 2022, 19:25PM'
 
-}
+const RecepientDetails = ({ orderData, setOrderData }) => {
 
-
-const RecepientDetails = () => {
-    
+    const { id: orderId } = useParams()
     const [showConfirmModal, setShowConfirmModal] = useState(false)
-    const accountDetailsText = `Bank name:  \nAccount name:  \nAccount number:`
+
+    const getOrderById = async () => {
+        try {
+            const response = await initRadenuContract()
+            const contract = response.contract
+            const data = await contract.order(Number(orderId))
+            setOrderData(data)
+        } catch (error) {
+            console.log({ error })
+        }
+    }
+
+    const accountDetailsText = `Bank name: ${orderData?.bankName} \nAccount name: ${orderData?.accountName} \nAccount number: ${formatUnit(orderData?.accountNumber)}`
+
+    const handleReleasePayment = () => {
+        setShowConfirmModal(true)
+    }
+
+    useEffect(() => {
+        getOrderById()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
 
     return (
         <>
-            <ConfirmTransferModal {...{ showConfirmModal, setShowConfirmModal }} />
+            <ConfirmTransferModal {...{ showConfirmModal, setShowConfirmModal, orderData, setOrderData, orderId }} />
             <div className="bg-white p-6">
                 <a href="/open-orders" className="mb-[29px] inline-block">
                     <img src={arrowLeft} alt="" />
@@ -50,7 +65,7 @@ const RecepientDetails = () => {
                         </div>
                         <div className="flex items-center capitalize text-sm justify-between">
                             <p className="text-[#5B616E]">Account Details</p>
-                            <p className="text-[#1C144C]">{orderData?.accountNumber}</p>
+                            <p className="text-[#1C144C]">{formatUnit(orderData?.accountNumber)}</p>
                         </div>
                         <div className="flex items-center capitalize text-sm justify-between">
                             <p className="text-[#5B616E]">Bank</p>
@@ -58,11 +73,11 @@ const RecepientDetails = () => {
                         </div>
                         <div className="flex items-center capitalize text-sm justify-between">
                             <p className="text-[#5B616E]">Amount</p>
-                            <p className="text-[#1C144C]">{orderData?.amount}</p>
+                            <p className="text-[#1C144C]">{formatUnit(orderData?.amount)}</p>
                         </div>
                         <div className="flex items-center capitalize text-sm justify-between">
                             <p className="text-[#5B616E]">Rate</p>
-                            <p className="text-[#1C144C]">{orderData?.exchangeRate}</p>
+                            <p className="text-[#1C144C]">{formatUnit(orderData?.exchangeRate)}</p>
                         </div>
                         <div className="flex items-center capitalize text-sm justify-between">
                             <p className="text-[#5B616E]">Fee</p>
@@ -70,21 +85,21 @@ const RecepientDetails = () => {
                         </div>
                         <div className="flex items-center capitalize text-sm justify-between">
                             <p className="text-[#5B616E]">Date</p>
-                            <p className="text-[#1C144C]">{orderData?.timeInitiated}</p>
+                            <p className="text-[#1C144C]">{formatDate(orderData?.timeInitiated)}</p>
                         </div>
                         <div className="flex items-center capitalize text-sm justify-between">
                             <p className="text-[#5B616E]">status</p>
-                            <Status status='accepted' />
+                            <Status status={orderState[orderData?.state]} />
                         </div>
                     </div>
                 </div>
 
                 <Button
-                    title="confirm payment completion"
-                    className="w-full h-10 text-sm md:text-base md:leading-[18px]"
-                    onClick={()=>setShowConfirmModal(true)}
+                    onClick={handleReleasePayment}
+                    title={orderState[orderData?.state]?.toLowerCase() === "completed" ? "you've confirmed your payment" : "confirm payment completion"}
+                    className="w-full h-10 text-sm md:text-base md:leading-[18px] disabled:bg-gray-600"
+                    isDisabled={orderState[orderData?.state]?.toLowerCase() === "completed"}
                 />
-
 
             </div>
         </>
