@@ -92,7 +92,7 @@ export const sendMoneyReducer = (state, action) => {
         case ACTION_TYPES_SEND_MONEY.ACCEPT_TERMS:
             return {
                 ...state,
-                isTermsAccepted: true
+                isTermsAccepted: !state.isTermsAccepted
             }
 
         default:

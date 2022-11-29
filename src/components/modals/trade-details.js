@@ -1,37 +1,44 @@
-import { Fragment } from "react"
+import { Fragment, useEffect, useState } from "react"
 import { Dialog, Transition } from "@headlessui/react"
 import { Button } from "components/input"
 import { useQuery } from "react-query";
 import numeral from "numeral";
-import { fetch } from "utils/helper";
+import { convertToNumber, fetch, formatUnit, parseUnit } from "utils/helper";
+import { ACTION_TYPES_SEND_MONEY } from "utils/reducers";
+import { useContractContext } from "context/ContractContext";
 
 // images 
 import closeIcon from 'assets/icons/close.png'
+import { initRadenuTokenContract } from "utils/helper/contract.helper";
+import toast from "react-hot-toast";
+import { RadenuContractAddress } from "utils/constant";
 
 
-const TradeDetails = ({ showTradeDetails, setShowTradeDetails, formData, setShowRiskNoticeOne, state, dispatch }) => {
+const TradeDetails = ({ showTradeDetails, setShowTradeDetails, setShowRiskNoticeOne, state, dispatch }) => {
+    const { account, isLoading, setStore } = useContractContext()
+    const [allowanceBalance, setAllowanceBalance] = useState()
+    const [isApproving, setIsApproving] = useState(false)
 
     const { data } = useQuery(["exchange-rate"], () =>
-        fetch(`https://api.apilayer.com/exchangerates_data/convert?to=${state.countryCurrency}&from=USD&amount=250&apikey=${process.env.REACT_APP_EXCHANGE_RATE_API_KEY}`)
+        fetch(`https://api.apilayer.com/exchangerates_data/convert?to=${state.countryCurrency}&from=USD&amount=${state.amount}&apikey=${process.env.REACT_APP_EXCHANGE_RATE_API_KEY}`)
     );
-
 
     const tradeDetails = [
         {
             heading: "amount",
-            description: `$${formData.amount} (${state.countryCurrency}${numeral(data?.result).format('0,0')})`
+            description: `$${state.amount} (${state.countryCurrency}${numeral(data?.result).format('0,0')})`
         },
         {
             heading: "bank name",
-            description: formData.bankName
+            description: state.bankName
         },
         {
             heading: "account number",
-            description: formData.accountNumber
+            description: state.accountNumber
         },
         {
             heading: "account name",
-            description: formData.accountName
+            description: state.accountName
         },
         {
             heading: "rates",
@@ -47,6 +54,65 @@ const TradeDetails = ({ showTradeDetails, setShowTradeDetails, formData, setShow
         setShowTradeDetails(false)
         setShowRiskNoticeOne(true)
     }
+
+    const checkAllowance = async () => {
+        setStore(prev => ({
+            ...prev,
+            isLoading: true
+        }))
+        try {
+            const response = await initRadenuTokenContract()
+            const contract = response.contract
+            const allowance = await contract.allowance(account, RadenuContractAddress)
+            const balance = formatUnit(allowance)
+            setAllowanceBalance(balance)
+            setStore(prev => ({
+                ...prev,
+                isLoading: false,
+            }))
+        } catch (error) {
+            toast.error("Something went wrong")
+        }
+    }
+
+    const approveTransaction = async () => {
+        const approvalAmount = convertToNumber(state.amount)
+        setIsApproving(true)
+        const notification = toast.loading('Approving transaction')
+        try {
+            const response = await initRadenuTokenContract()
+            const contract = response.contract
+            const txHash = await contract.approve(RadenuContractAddress, parseUnit(approvalAmount))
+            const receipt = await txHash.wait()
+            if (receipt) {
+                checkAllowance()
+                toast.success("Approval was successful", {
+                    id: notification
+                })
+            }
+            setIsApproving(false)
+
+        } catch (error) {
+            toast.error("Something went wrong", {
+                id: notification
+            })
+        }
+    }
+
+    useEffect(() => {
+        if (data) {
+            dispatch({
+                type: ACTION_TYPES_SEND_MONEY.UPDATE_RATE,
+                payload: data?.info?.rate
+            })
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
+
+    useEffect(() => {
+        checkAllowance()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     return (
         <Transition
@@ -90,21 +156,31 @@ const TradeDetails = ({ showTradeDetails, setShowTradeDetails, formData, setShow
 
                         </section>
 
+                        {
+                            isLoading ? <p className="text-center">Please wait...</p> :
 
-                        <div className="space-y-[10px] md:space-y-[22px]">
-
-                            <Button
-                                type="button"
-                                className="w-full h-9 rounded-[5px] text-sm leading-[18px]"
-                            />
-
-                            <Button
-                                type="button"
-                                title="proceed with transactions"
-                                className="w-full h-9 rounded-[5px] text-sm leading-[18px]"
-                                onClick={handleProceedTransactions}
-                            />
-                        </div>
+                                <div className="space-y-[10px] md:space-y-[22px]">
+                                    {
+                                        allowanceBalance <= convertToNumber(state.amount) &&
+                                        <Button
+                                            title={
+                                                isApproving ?
+                                                    "Approving Transaction..."
+                                                    :
+                                                    "Approve Transaction"}
+                                            className="w-full h-9 rounded-[5px] text-sm leading-[18px] disabled:bg-gray-600"
+                                            onClick={approveTransaction}
+                                            isDisabled={isApproving || (allowanceBalance >= convertToNumber(state.amount))}
+                                        />
+                                    }
+                                    <Button
+                                        title="proceed with transactions"
+                                        className="w-full h-9 rounded-[5px] text-sm leading-[18px] disabled:bg-gray-600"
+                                        onClick={handleProceedTransactions}
+                                        isDisabled={!(allowanceBalance >= convertToNumber(state.amount))}
+                                    />
+                                </div>
+                        }
 
                     </div>
                 </div>

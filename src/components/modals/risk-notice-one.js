@@ -1,13 +1,19 @@
-import { Fragment } from "react"
+import { Fragment, useState } from "react"
 import { Dialog, Transition } from "@headlessui/react"
 import { Button, CheckBox } from "components/input"
+import { ACTION_TYPES_SEND_MONEY } from "utils/reducers"
+import { useContractContext } from "context/ContractContext"
+import toast from "react-hot-toast"
+import { initRadenuContract, initRadenuTokenContract } from "utils/helper/contract.helper"
+import { convertToNumber, formatUnit, parseUnit } from "utils/helper"
 
 // images
 import closeIcon from 'assets/icons/close.png'
 import riskIcon from 'assets/icons/risk-icon.png'
-import { ACTION_TYPES_SEND_MONEY } from "utils/reducers"
 
-const RiskNoticeOne = ({ showRiskNoticeOne, setShowRiskNoticeOne, state, dispatch }) => {
+const RiskNoticeOne = ({ showRiskNoticeOne, setShowRiskNoticeOne, state, dispatch, setBalance, setOrderList }) => {
+    const { account } = useContractContext()
+    const [isCreatingOrder, setIsCreatingOrder] = useState(false)
 
     const handleCheckbox = () => {
         dispatch({
@@ -15,6 +21,58 @@ const RiskNoticeOne = ({ showRiskNoticeOne, setShowRiskNoticeOne, state, dispatc
         })
     }
 
+    const getOrders = async () => {
+        try {
+            const response = await initRadenuContract()
+            const contract = response.contract
+            const totalOrder = await contract.getTotalOrder()
+            setOrderList(totalOrder)
+        } catch (error) {
+            toast.error('Something went wrong')
+            console.log({ error })
+        }
+    }
+
+    const getUserBalance = async () => {
+        const response = await initRadenuTokenContract()
+        const contract = response.contract
+        const accountBalance = await contract.balanceOf(account)
+        setBalance(formatUnit(accountBalance))
+    }
+
+    const handleCreateOrder = async () => {
+        const notification = toast.loading('Please wait...Transaction in process')
+        setIsCreatingOrder(true)
+
+        try {
+            const response = await initRadenuContract()
+            const contract = response.contract
+            const txHash = await contract.createOrder(
+                parseUnit(convertToNumber(state?.amount)),
+                parseUnit(convertToNumber(state?.accountNumber)),
+                state?.accountName,
+                state?.bankName,
+                state?.country,
+                parseUnit(convertToNumber(state?.state))
+            )
+            const receipt = await txHash.wait()
+            if (receipt) {
+                getUserBalance()
+                getOrders()
+                setShowRiskNoticeOne(false)
+                setIsCreatingOrder(false)
+                dispatch({ type: ACTION_TYPES_SEND_MONEY.GO_BACK })
+                toast.success("Order has been made", {
+                    id: notification
+                })
+            }
+        } catch (error) {
+            setIsCreatingOrder(false)
+            toast.error("Opps! Something went wrong.", {
+                id: notification
+            })
+        }
+    }
 
     return (
         <Transition
@@ -65,7 +123,9 @@ const RiskNoticeOne = ({ showRiskNoticeOne, setShowRiskNoticeOne, state, dispatc
                             <Button
                                 type="button"
                                 title="confirm"
-                                className="w-full h-9 rounded-[5px] text-sm leading-[18px]"
+                                className="w-full h-9 rounded-[5px] text-sm leading-[18px] disabled:bg-gray-600"
+                                onClick={handleCreateOrder}
+                                isDisabled={!state.isTermsAccepted || isCreatingOrder}
                             />
                         </div>
                     </div>

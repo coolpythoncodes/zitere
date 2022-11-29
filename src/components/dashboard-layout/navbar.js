@@ -10,7 +10,7 @@ const Navbar = ({ openSidebar }) => {
 
     const { account, isWalletConnected, connectWallet } = useContractContext()
     return (
-        <NavContainer className="flex px-5 justify-between items-center h-[74px] font-Montserrat">
+        <NavContainer className="flex px-5 justify-between items-center h-[74px]">
             <img
                 src={menuIcon}
                 alt=""

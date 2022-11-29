@@ -5,7 +5,7 @@ import { useEffect, useState } from 'react'
 import toast from 'react-hot-toast'
 import { ACTION_TYPES_SEND_MONEY } from 'utils/reducers'
 
-const SendMoneyTwo = ({ state, dispatch }) => {
+const SendMoneyTwo = ({ state, dispatch, setBalance, setOrderList }) => {
     const [isValid, setIsValid] = useState(false)
     const [showTradeDetails, setShowTradeDetails] = useState(false)
     const [showRiskNoticeOne, setShowRiskNoticeOne] = useState(false);
@@ -103,13 +103,13 @@ const SendMoneyTwo = ({ state, dispatch }) => {
             {showTradeDetails && (
                 <TradeDetails
                     formData={state}
-                    {...{ state, dispatch, setShowTradeDetails, showTradeDetails, setShowRiskNoticeOne }}
+                    {...{ state, dispatch, setShowTradeDetails, showTradeDetails, setShowRiskNoticeOne, setBalance, setOrderList }}
                 />
             )}
 
             {
                 showRiskNoticeOne && (
-                    <RiskNoticeOne {...{ showRiskNoticeOne, setShowRiskNoticeOne, state, dispatch }} />
+                    <RiskNoticeOne {...{ showRiskNoticeOne, setShowRiskNoticeOne, state, dispatch, setOrderList, setBalance }} />
                 )
             }
             <form className='mt-6 space-y-6'>
