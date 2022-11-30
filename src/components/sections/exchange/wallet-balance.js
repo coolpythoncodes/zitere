@@ -16,7 +16,7 @@ const WalletBalance = ({ balance, setBalance }) => {
   useEffect(() => {
     getUserBalance()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [])
+  }, [account])
   return (
     <div className='bg-white py-4 md:py-8 pl-3 md:pl-6 rounded-lg'>
       <p className="capitalize matter-regular text-[#0B0B27] text-lg leading-[22px]">Balance</p>
