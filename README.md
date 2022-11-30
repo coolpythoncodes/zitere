@@ -1,70 +1,60 @@
-# Getting Started with Create React App
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+<!-- PROJECT SHIELDS -->
+<!--
+*** I'm using markdown "reference style" links for readability.
+*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
+*** See the bottom of this document for the declaration of the reference variables
+*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
+*** https://www.markdownguide.org/basic-syntax/#reference-style-links
+-->
 
-## Available Scripts
+![](https://img.shields.io/badge/Hackathon-blueviolet)
 
-In the project directory, you can run:
+[![Contributors][contributors-shield]][contributors-url]
+[![GitHub issues][issues-shield]][issues-url]
+[![GitHub forks][forks-shield]][forks-url]
+[![GitHub stars][star-shield]][star-url]
+[![GitHub license][license-shield]][license-url]
 
-### `yarn start`
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+# Zitere
 
-### `yarn test`
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+> Zitere is a platform that faciliates payment to Nigeria, Ghana, South Africa, Kenya and Cote D'Ivore from any part of the world utilizing blockchain technology. It's built on Mumbai Polygon testnet network.
 
-### `yarn build`
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Built With
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- React
+- React Query
+- Tailwind css
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🖇 How to Start
 
-### `yarn eject`
+- Git clone and
+- `cd zitere`
+- Copy `.env.example` to a new `.env.local` file on zitere root folder
+- `npm install` to install dependencies
+- `npm start` to start development server
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🤝 Contributing
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+Contributions, issues, and feature requests are welcome!
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+Feel free to check the [issues page](../../issues/).
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## Show your support
 
-## Learn More
+Give a ⭐ if you like this project!
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `yarn build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+[contributors-shield]: https://img.shields.io/github/contributors/coolpythoncodes/zitere?style=for-the-badge
+[contributors-url]: https://github.com/coolpythoncodes/zitere/graphs/contributors
+[issues-shield]: https://img.shields.io/github/issues/coolpythoncodes/zitere?style=for-the-badge
+[issues-url]: https://github.com/coolpythoncodes/zitere/issues
+[forks-shield]: https://img.shields.io/github/forks/coolpythoncodes/zitere?style=for-the-badge
+[forks-url]: https://github.com/coolpythoncodes/zitere/network
+[star-shield]: https://img.shields.io/github/stars/coolpythoncodes/zitere?style=for-the-badge
+[star-url]: https://github.com/coolpythoncodes/zitere/stargazers
+[license-shield]: https://img.shields.io/github/license/coolpythoncodes/zitere?style=for-the-badge
+[license-url]: https://github.com/coolpythoncodes/zitere/blob/master/license
