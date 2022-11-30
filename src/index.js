@@ -8,9 +8,10 @@ import { ContractContextProvider } from 'context/ContractContext';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
     // <React.StrictMode>
-        <ContractContextProvider>
-            <App />
-        </ContractContextProvider>
+    <ContractContextProvider>
+        <App />
+    </ContractContextProvider>
+
     // </React.StrictMode>
 );
 
