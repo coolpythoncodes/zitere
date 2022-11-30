@@ -1,24 +1,55 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Status, TransactionCategories } from 'components/misc'
+import { useContractContext } from 'context/ContractContext'
+import { useNavigate } from 'react-router-dom'
+import { formatDate, formatUnit } from 'utils/helper'
+import { initRadenuContract } from 'utils/helper/contract.helper'
+import toast from 'react-hot-toast'
+import { orderState } from 'utils/constant'
 
-
-const transactions = Array(10).fill({
-    accountName: 'Ugoguba anthony',
-    amount: '1000',
-    timeInitiated: '22 Jun, 2022, 19:25PM',
-    state: 'completed'
-})
 
 const Transactions = () => {
-
+    const { account } = useContractContext()
     const [activeSection, setActiveSection] = useState(0)
+    const [orderList, setOrderList] = useState([])
+    const navigate = useNavigate();
+    const handleNavigation = (to) => navigate(to)
+
+    const getOrders = async () => {
+        try {
+            const response = await initRadenuContract()
+            const contract = response.contract
+            const totalOrder = await contract.getTotalOrder()
+            setOrderList(totalOrder)
+        } catch (error) {
+            toast.error('Something went wrong')
+            console.log({ error })
+        }
+    }
+
+    const handleSeeTransaction = (orderId) => {
+        const _id = Math.round((formatUnit(orderId) * (10 ** 18)) - 1)
+        handleNavigation(`/home/${_id}`)
+    }
+
+    const recentTransactionsAll = orderList.filter((item) => item?.sender.toLowerCase() === account.toLowerCase() || item?.receiver?.toLowerCase() === account.toLowerCase()).reverse()
+    const transactionCategory = (state) => {
+        if (state === 0) return recentTransactionsAll
+        return recentTransactionsAll?.filter(item => item?.state === state - 1)
+    }
 
     const changeActiveSection = (index) => {
         setActiveSection(index)
     }
+
+    useEffect(() => {
+        getOrders()
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [account]);
+
     return (
         <div className='py-6 px-3 md:px-6 bg-white '>
-            <h1 className='matter-bold text-[#192839] text-2xl leading-[29px] capitalize'>Transaction history</h1>
+            <h1 className='matter-bold text-[#192839] text-2xl leading-[29px] capitalize mb-5'>Transaction history</h1>
             <TransactionCategories {...{ changeActiveSection, activeSection }} />
 
             {/* Table heading */}
@@ -34,17 +65,16 @@ const Transactions = () => {
 
             <div className="h-[calc(100vh-300px)] text-primary-2 matter-regular overflow-auto">
                 {
-                    transactions?.map((item, index) => (
+                    transactionCategory(activeSection)?.map((item, index) => (
                         <div
                             key={index}
-                            // onClick={() => handleSeeTransaction(item.orderId)}
-                            // onClick={() => handleNavigation(`/exchange/${formatUnit(item.orderId) * (10 ** 18)}`)}
+                            onClick={() => handleSeeTransaction(item.orderId)}
                             className="grid grid-cols-4 items-center py-[10px] w-full border-b border-[#F0F0F0]  text-sm cursor-pointer leading-[18px]">
                             <div>{item.accountName}</div>
-                            <div className='lg:text-center'>{item.amount}</div>
-                            <div>{item?.timeInitiated}</div>
+                            <div className='lg:text-center'>{`$${formatUnit(item.amount)}`}</div>
+                            <div>{formatDate(item?.timeInitiated)}</div>
                             <div className="lg:mx-auto">
-                                <Status status={item?.state} />
+                                <Status status={orderState[item?.state]} />
                             </div>
                         </div>
                     ))

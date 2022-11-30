@@ -1,6 +1,8 @@
+import { useRef } from "react";
 import Logo from "components/misc/logo";
 import { Link } from "react-router-dom";
 import { SidebarContainer } from "styles"
+import useOnClickOutside from "utils/hooks/useOnClickOutside";
 
 // images 
 import whiteLogo from 'assets/white-logo.svg'
@@ -8,6 +10,11 @@ import closeIcon from 'assets/icons/white-close-icon.svg'
 // import logOutIcon from 'assets/icons/log-out.svg'
 
 const Aside = ({ children, sidebarOpen, closeSidebar }) => {
+    const selectContainerRef = useRef(null);
+    const clickOutsideHandler = () => {
+        closeSidebar()
+    };
+    useOnClickOutside(selectContainerRef, clickOutsideHandler);
 
     const sidebarResponsiveStyle = () => {
         if (sidebarOpen) {
@@ -22,7 +29,7 @@ const Aside = ({ children, sidebarOpen, closeSidebar }) => {
     }
     return (
         <SidebarContainer style={sidebarResponsiveStyle()} className="hidden h-screen bg-[#454A75] pt-10 lg:block">
-            <div className="flex flex-col h-[90vh]">
+            <div className="flex flex-col h-[90vh]" ref={selectContainerRef}>
                 <div className="px-8 flex items-center justify-between">
                     <Link to="/">
                         <Logo icon={whiteLogo} />
