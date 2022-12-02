@@ -20,7 +20,7 @@ const Home = () => {
                         </div>
                         <div className="">
                             <h1 className="text-[#18191F] matter-semiBold text-3xl lg:text-4xl xl:text-5xl xl:leading-[48px]">Send money across <br /> continents</h1>
-                            <p className="matter-regular text-b3 lg:text-[22px] lg:leading-[31px]">Penatibus enim mattis sit a. Maecenas interdum at id etiam est tempus. Nisi, pellentesque aenean justo cras tempus.</p>
+                            <p className="matter-regular text-b3 lg:text-[22px] lg:leading-[31px] mt-2">Enjoy convenient cross-border transfers on Zitere. No paperwork. No bank protocol.</p>
                         </div>
                     </div>
 
@@ -31,7 +31,7 @@ const Home = () => {
                         </div>
                         <div className="">
                             <h1 className="text-[#18191F] matter-semiBold text-3xl lg:text-4xl xl:text-5xl xl:leading-[48px]">Send up to $10,000 <br /> daily to bank accounts</h1>
-                            <p className="matter-regular text-b3 lg:text-[22px] lg:leading-[31px]">Penatibus enim mattis sit a. Maecenas interdum at id etiam est tempus. Nisi, pellentesque aenean justo cras tempus.</p>
+                            <p className="matter-regular text-b3 lg:text-[22px] lg:leading-[31px] mt-5">There are no limits on the amount you can send, so long as your business meets the standard verification processes. Our platform allows you to move bulk business payments without sweats</p>
                         </div>
                     </div>
                 </div>
