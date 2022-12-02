@@ -96,6 +96,7 @@ const TradeDetails = ({ showTradeDetails, setShowTradeDetails, setShowRiskNotice
             toast.error("Something went wrong", {
                 id: notification
             })
+            setIsApproving(false)
         }
     }
 
